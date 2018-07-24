@@ -5,8 +5,6 @@ date: "July 19, 2018"
 output: html_document
 ---
 
-
-
 ```{r}
 library(tidyverse)
 library(stringr)
@@ -95,17 +93,29 @@ word_counts <- tokenized_corpus %>%
 
 # Words to drop by frequency
 words_to_drop <- word_counts %>% 
-  filter(n <= 2 | n >= 10000)
+  filter(n <= 2 | n >= 10000) 
+
+# FIlter out specific words
+words_to_drop_2 <- c("chumlee, chum, frank's, chum's, rip's, troy, pawn, guys, stars, rick's, shop, dwaine")
+
+words_to_drop_2 <- data_frame(stopwords = str_split(words_to_drop_2, ", ")[[1]])
+colnames(words_to_drop_2)[1] <- "word"
+
+words_to_drop_2 <- as.data.frame(words_to_drop_2)
+names(words_to_drop_2)[1]<-"word"
 
 nrow(words_to_drop) / nrow(word_counts)
 ```
+
+
 ```{r}
 
 # Drop words by frequency and also stopwords
 
 tokenized_corpus<- tokenized_corpus%>% 
   anti_join(words_to_drop, by = "word") %>% 
-  anti_join(stopwords_jockers, by = "word")
+  anti_join(stopwords_jockers, by = "word") %>%
+  anti_join(words_to_drop_2, by = "word")
 
 
 
@@ -250,7 +260,7 @@ corpus_docs %>%
 
 ```{r}
 # Repeating the process with a different number of topics
-corpus_lda2 <- LDA(corpus_dtm, k = 50, control = list(seed = 6432))
+corpus_lda2 <- LDA(corpus_dtm, k = 12, control = list(seed = 6432))
 
 corpus_topics2 <- tidy(corpus_lda2, matrix = "beta")
 
