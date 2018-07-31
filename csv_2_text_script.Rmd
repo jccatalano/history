@@ -55,7 +55,7 @@ csv2txt <- function(mydir, labels = 1){
 
 
 
-csv2txt("C:/Users/Joshua/Desktop/Test folder", labels = 1)  
+csv2txt("C:/Users/Joshua/Desktop/history/show_description_files", labels = 1)  
 
 
 ```

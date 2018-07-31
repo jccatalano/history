@@ -42,7 +42,7 @@ read_corpus <- function(dir) {
 
 ```{r}
 
-sample_corpus <- read_corpus("C:/Users/Joshua/Desktop/history/test_show_files")
+sample_corpus <- read_corpus("C:/Users/Joshua/Desktop/history/show_description_unique")
 
 
 #saveRDS(my_corpus, ".rds")
@@ -96,7 +96,7 @@ words_to_drop <- word_counts %>%
   filter(n <= 2 | n >= 10000) 
 
 # FIlter out specific words
-words_to_drop_2 <- c("chumlee, chum, frank's, chum's, rip's, troy, pawn, guys, stars, rick's, shop, dwaine")
+words_to_drop_2 <- c("chumlee, chum, frank's, chum's, rip, rip's, troy, pawn, guys, stars, rick's, shop, dwaine, las, da, it's, he's, episode, bear, chase, seen, count's, count, kustoms, cold, deal")
 
 words_to_drop_2 <- data_frame(stopwords = str_split(words_to_drop_2, ", ")[[1]])
 colnames(words_to_drop_2)[1] <- "word"
@@ -116,9 +116,6 @@ tokenized_corpus<- tokenized_corpus%>%
   anti_join(words_to_drop, by = "word") %>% 
   anti_join(stopwords_jockers, by = "word") %>%
   anti_join(words_to_drop_2, by = "word")
-
-
-
 ```
 
 ```{r}
@@ -141,6 +138,19 @@ plot_words <- function(tidy_df, n = 10) {
 ```{r}
 plot_words(tokenized_corpus, n = 60)
 ```
+```{r}
+ tokenized_corpus %>%
+  count(word, sort = TRUE) %>%
+    top_n(60, n) %>% 
+    mutate(word = reorder(word, n)) %>%
+    ggplot(aes(word, n)) +
+    geom_col() +
+  labs(title = "Most Common Words Included in Episode Descriptions", subtitle = "*Pruned vocab not included") +
+    xlab(NULL) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+    coord_flip()
+```
+
 
 ```{r}
 # Get word counts by document
@@ -260,7 +270,7 @@ corpus_docs %>%
 
 ```{r}
 # Repeating the process with a different number of topics
-corpus_lda2 <- LDA(corpus_dtm, k = 12, control = list(seed = 6432))
+corpus_lda2 <- LDA(corpus_dtm, k = 10, control = list(seed = 6432))
 
 corpus_topics2 <- tidy(corpus_lda2, matrix = "beta")
 
