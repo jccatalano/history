@@ -144,10 +144,11 @@ plot_words(tokenized_corpus, n = 60)
     top_n(60, n) %>% 
     mutate(word = reorder(word, n)) %>%
     ggplot(aes(word, n)) +
-    geom_col() +
-  labs(title = "Most Common Words Included in Episode Descriptions", subtitle = "*Pruned vocab not included") +
+    geom_col(fill = "dark green") +
+    labs(title = "Most Common Words Included in Episode Descriptions", subtitle = "*Pruned vocab not included | each episode only included once", y = "Word Count") +
     xlab(NULL) +
-  theme(plot.title = element_text(hjust = 0.5)) +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    theme(plot.subtitle = element_text(hjust = 0.5)) +
     coord_flip()
 ```
 
@@ -270,14 +271,14 @@ corpus_docs %>%
 
 ```{r}
 # Repeating the process with a different number of topics
-corpus_lda2 <- LDA(corpus_dtm, k = 10, control = list(seed = 6432))
+corpus_lda2 <- LDA(corpus_dtm, k = 12, control = list(seed = 6432))
 
 corpus_topics2 <- tidy(corpus_lda2, matrix = "beta")
 
 corpus_topics_display2 <- corpus_topics2 %>% 
   mutate(beta = round(beta, 4)) %>% 
   group_by(topic) %>% 
-  top_n(15, beta) %>% 
+  top_n(20, beta) %>% 
   arrange(topic, desc(beta))
 
 corpus_topics_display2 %>% 
@@ -286,13 +287,13 @@ corpus_topics_display2 %>%
 
 corpus_topics2 %>%
   group_by(topic) %>%
-  top_n(12, beta) %>%
+  top_n(20, beta) %>%
   ungroup() %>%
   arrange(topic, -beta) %>% 
   mutate(term = reorder(term, beta)) %>%
   ggplot(aes(term, beta, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, nrow = 4, scales = "free") +
+  facet_wrap(~ topic, nrow = 3, scales = "free") +
   coord_flip()
 ```
 

@@ -13,7 +13,7 @@ library(ggplot2)
 count_table <- read.csv(file="c://Users/Joshua/Desktop/history/frequency_data.csv", header=TRUE, sep=",")
 
 show_counts <- count_table %>% 
-  count(Show.Name,) %>% 
+  count(Show.Name) %>% 
   group_by(Show.Name) %>% 
   mutate(show_count = n()) %>% 
   ungroup()
@@ -39,15 +39,11 @@ ggplot(aes(x = reorder(Show.Name, - n),  y = n)) +
 
 ```{r}
 episode_counts <- count_table %>% 
-  count(Title, Show.Name) %>% 
+  count(Title) %>% 
   group_by(Title) %>% 
     ungroup()
   
 colnames(episode_counts)[colnames(episode_counts)=="n"] <- "episode_count"
 
-show_counts <- count_table%>%
-  count(Show.Name) %>%
-  group_by(Show.Name) %>%
-  ungroup()
 ```
 
