@@ -1,1 +1,1 @@
-# history
+# This repository contains the code and data for Briana Pocratsky and Joshua Catalano's project on History presented at the Media Preconference to the 2018 ASA conference. In order to run the code locally, the file paths will need to be modified to first create the files and generate the corpus. 
